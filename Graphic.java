@@ -3,13 +3,14 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class Graphic extends JPanel {
-	int n = 2;
+	int n;
 	private double[] posX;
 	private double[] posY;
 	
-	Graphic(double[] posX,double[] posY){
+	Graphic(double[] posX,double[] posY, int n){
 		this.posX = posX;
 		this.posY = posY;
+		this.n = n;
 	}
 
 	public void paintComponent(Graphics g){
