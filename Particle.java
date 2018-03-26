@@ -43,6 +43,7 @@ public class Particle implements Runnable {
 		acceleration[i][1]=0;
 		for (int j = 0; j < n; j++) {
 			if (i != j) {
+				
 				double dx = position[i][0] - position[j][0];
 				double dy = position[i][1] - position[j][1];
 				double[] acc = Simulation.interaction(i, j, dx, dy, masse);

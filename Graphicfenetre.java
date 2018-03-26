@@ -37,17 +37,14 @@ public class Graphicfenetre extends JFrame implements Runnable{
 		double[][] trajectoire;
 		System.out.println("temps total= " + tempstotal + " ");
 		for (int t = 0; t < tempstotal-1; t++){
-			System.out.println("On prend l'image "+ t +" ");
 			trajectoire = queue.take();
-			System.out.println("On l'a prise");
 			/*pour chaque i, on place le cercle i à la position donnée par trajectoire*/
 			for (int i = 0; i < n; i++) {
 				pan.setPosX((int) trajectoire[i][0], i);
 				pan.setPosY((int) trajectoire[i][1], i);
 			}
-			Thread.sleep(100);
 			/*on modifie la fenêtre avec les nouvelles positions*/
-			pan.repaint();
+			this.pan = new Graphic(posX,posY,n);
 	  	}
   	}
   
