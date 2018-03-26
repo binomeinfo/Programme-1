@@ -10,9 +10,10 @@ public class Particle implements Runnable {
 	double[][] vitesse;
 	double[][] acceleration;
 	double[] masse;
-	Barrier[] barriers;
+	Barrier[] barriers1;
+	Barrier[] barriers2;
 
-	public Particle(Barrier[] barriers, int n, double[] masse, double[][] position,
+	public Particle(Barrier[] barriers1, Barrier[] barriers2, int n, double[] masse, double[][] position,
 			double[][] vitesse, double[][] acceleration, int i, double delta) {
 		this.i = i;
 		this.n = n;
@@ -21,7 +22,8 @@ public class Particle implements Runnable {
 		this.position = position;
 		this.vitesse = vitesse;
 		this.acceleration = acceleration;
-		this.barriers=barriers;
+		this.barriers1=barriers1;
+		this.barriers2=barriers2;
 	}
 
 	/* recalcul de la position */
@@ -43,7 +45,6 @@ public class Particle implements Runnable {
 		acceleration[i][1]=0;
 		for (int j = 0; j < n; j++) {
 			if (i != j) {
-				
 				double dx = position[i][0] - position[j][0];
 				double dy = position[i][1] - position[j][1];
 				double[] acc = Simulation.interaction(i, j, dx, dy, masse);
@@ -54,15 +55,20 @@ public class Particle implements Runnable {
 	}
 
 	public void run() {
-		for (int i=0; i<barriers.length;i=i+1) {
+		for (int i=0; i<barriers1.length;i=i+1) {
 			this.calculAccel();
 			try {
-				barriers[i].waitForRest();
+				barriers1[i].waitForRest();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			this.calculVitesse();
 			this.calculposition();
+			try {
+				barriers2[i].waitForRest();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

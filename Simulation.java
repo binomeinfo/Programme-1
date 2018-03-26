@@ -22,42 +22,32 @@ public class Simulation {
 		double delta = 0.001;
 		generateTest(n, position, vitesse, masse);
 		
-		Barrier[] barriers=new Barrier[tempstotal];
+		Barrier[] barriers1=new Barrier[tempstotal];
+		Barrier[] barriers2=new Barrier[tempstotal];
 		ArrayBlockingQueue<double[][]> queue=new ArrayBlockingQueue<double[][]>(tempstotal+1);
 		Thread affichage = new Thread(new Graphicfenetre(n,tempstotal,position,queue));
 		Thread[] tableau = new Thread[n];/*Tableau des Threads*/
 		for (int t=0; t<tempstotal; t=t+1) {
-			barriers[t]=new Barrier(n+1);
+			barriers1[t]=new Barrier(n+1);
+			barriers2[t]=new Barrier(n);
 		}
 		for (int i = 0; i < n; i++) {
-			barriers[i]=new Barrier(n+1);
-			tableau[i] = new Thread(new Particle(barriers, n, masse, position, vitesse, acceleration, i, delta));
+			tableau[i] = new Thread(new Particle(barriers1, barriers2, n, masse, position, vitesse, acceleration, i, delta));
 			tableau[i].start();	
 		}
 		affichage.start();
 		for (int t=0; t<tempstotal; t=t+1) {
-			Thread.sleep(1);
 			queue.put(position.clone());
-			affiche(position);
-			barriers[t].waitForRest();
-		}
-	}
-	
-	public static void affiche(double[][] position) {
-		for (int i=0; i<position.length; i=i+1) {
-			for (int j=0; j<position[0].length; j=j+1) {
-				System.out.print(position[i][j]+" ");
-			}
-			System.out.println(" fin de ligne");
+			barriers1[t].waitForRest();
 		}
 	}
 	
 	public static void generateTest(int n, double[][] position, double[][] vitesse, double[] masse) {
 		 for (int i=0; i<n; i=i+1) {
-			 position[i][0]= Math.random()*300;
-			 position[i][1]= Math.random()*300;
-			 vitesse[i][0]= Math.random()*40;
-			 vitesse[i][1]= Math.random()*40;
+			 position[i][0]= (Math.random()-0.5)*10+500;
+			 position[i][1]= (Math.random()-0.5)*10+500;
+			 vitesse[i][0]= (Math.random()-0.5)*40;
+			 vitesse[i][1]= (Math.random()-0.5)*40;
 			 masse[i]= Math.random()*50;
 		 }
 	}
