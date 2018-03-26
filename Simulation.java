@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 public class Simulation {
 	public static void main(String[] args) throws InterruptedException {
-		int n = 20;
+		int n = 50;
 		int tempstotal = 150000;
 //		double[] masse = {1,1000};
 //		double[] positionun = {200,0};
@@ -38,16 +38,16 @@ public class Simulation {
 		affichage.start();
 		for (int t=0; t<tempstotal; t=t+1) {
 			queue.put(position.clone());
-			barriers1[t].waitForRest();
+			barriers1 	[t].waitForRest();
 		}
 	}
 	
 	public static void generateTest(int n, double[][] position, double[][] vitesse, double[] masse) {
 		 for (int i=0; i<n; i=i+1) {
-			 position[i][0]= (Math.random()-0.5)*10+500;
-			 position[i][1]= (Math.random()-0.5)*10+500;
-			 vitesse[i][0]= (Math.random()-0.5)*40;
-			 vitesse[i][1]= (Math.random()-0.5)*40;
+			 position[i][0]= (Math.random()-0.5)*100+300;
+			 position[i][1]= (Math.random()-0.5)*100+300;
+			 vitesse[i][0]= (Math.random()-0.5)*20;
+			 vitesse[i][1]= (Math.random()-0.5)*20;
 			 masse[i]= Math.random()*50;
 		 }
 	}
@@ -56,6 +56,11 @@ public class Simulation {
 		double[] acc=new double[2];
 		double g=9.1;
 		double distance=Math.sqrt(dx*dx+dy*dy);
+		if (distance==0) {
+			acc[0]=0;
+			acc[1]=0;
+			return acc;
+		}
 		acc[0] = -g*masse[j]*dx/(distance*distance);
 		acc[1] = -g*masse[j]*dy/(distance*distance);	
 		return acc;
